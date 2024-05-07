@@ -124,8 +124,7 @@ filter: brightness(1.1);
   border-radius: 10px;
   border: 1px solid rgba( 255, 255, 255, 0.18 );
 
-
-  display: flex;
+  display: none;
   
   justify-content: center;
   align-items: center;
@@ -137,6 +136,7 @@ filter: brightness(1.1);
 
 
 }
+
 
 .modal{
   position: relative;
@@ -157,7 +157,7 @@ backdrop-filter: blur( 4.5px );
 border-radius: 1.5rem;
 border: 1px solid rgba( 255, 255, 255, 0.18 );
 
-animation: modalopen 1s;
+animation: modalopen 0.3s ease-in-out;
 }
 
 @keyframes modalopen{
