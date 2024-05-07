@@ -51,6 +51,7 @@ margin-left: 2rem;
   
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.354);
   cursor: pointer;
+  z-index: 100;
 
 }
 
