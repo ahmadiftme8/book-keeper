@@ -27,6 +27,8 @@ let bookmarks = [];
 
 
     
+function fetchBookmarks(){
+
     if(JSON.parse(localStorage.getItem('bookmarks'))){
 
         bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
@@ -35,6 +37,22 @@ let bookmarks = [];
     }else{
         console.log('array is empty');
     }
+
+}
+
+
+if(JSON.parse(localStorage.getItem('bookmarks'))){
+
+    bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+    console.log('rerived bookmarks:', bookmarks);
+
+}else{
+    console.log('array is empty');
+}
+
+
+
+    
 
 
 //show modal, fucose on Input
@@ -81,6 +99,9 @@ function validateForm(nameValue,urlValue){
 
 //build bookmark doms
 function buildBookmarks(){
+    // remove all bookmark elements
+    bookmarkContainer.textContent = '';
+    fetchBookmarks();
     //build items
     bookmarks.forEach((bookmark)=>{
         const {name, url} = bookmark;
@@ -98,6 +119,7 @@ function buildBookmarks(){
         svgElement.setAttribute('id', 'delete-bookmark');
         svgElement.setAttribute('version', '1.1');
         svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        svgElement.setAttribute('onclick', `deleteBookmark('${url}')`);
         svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
         svgElement.setAttribute('x', '0px');
         svgElement.setAttribute('y', '0px');
@@ -136,13 +158,13 @@ function buildBookmarks(){
         // Append the SVG and name div to the main div
         itemDiv.appendChild(svgElement);
         itemDiv.appendChild(nameDiv);
-        console.log(itemDiv);
+        
 
         // Now you can append itemDiv to wherever you want in your document
         // For example, to append it to the body:
         bookmarkContainer.appendChild(itemDiv);
+        fetchBookmarks();
 
-        
 
     });
 }
@@ -152,8 +174,20 @@ function buildBookmarks(){
 
     //delete bookmark
 
+
     function deleteBookmark(url){
         console.log('delete url:',url);
+    
+        for(let i = bookmarks.length - 1; i >= 0; i--){
+            if(bookmarks[i].url === url){
+                bookmarks.splice(i, 1);
+            }
+        }
+    
+        //update bookmarks array in LS, re-pipulate DOM
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        fetchBookmarks();
+        buildBookmarks();
     }
 
     // bookmark delete btn event listener
@@ -183,11 +217,10 @@ function storeBookmark(e){
     bookmarks.push(bookmark);
     console.log('bookmarks array:',bookmarks);
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    fetchBookmarks();
     buildBookmarks();
-    /* bookmarkForm.reset();
-    websiteNameInput.focus(); */
-    
-
+    bookmarkForm.reset();
+    websiteNameInput.focus();
 
 }
 
@@ -196,4 +229,7 @@ bookmarkForm.addEventListener('submit', storeBookmark);
 
 //on load , fetch bookmark
 
+
+fetchBookmarks();
 buildBookmarks();
+
